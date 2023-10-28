@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>TicTacToe</title>
+	<style type="text/css">
+		*{
+			padding: 0;
+		border:0;
+		box-sizing: border-box;
+		}
+		body{
+		justify-content: center;
+		align-items: center;
+		background:linear-gradient(135deg,#8052ec,#d161ff); 
+		text-align: center;
+	}
+	.container {
+            display: grid;
+            grid-template-columns: repeat(3, 50px);
+            grid-template-rows: repeat(3, 50px);
+            gap:120px;
+            justify-content: center;
+            align-items: center;
+            margin:100px 100px;
+  		}        	
+	.b1{
+ 		width:150px;
+		height: 150px;
+		border-radius: 10px;
+        font-size:48px;
+            font-weight: bolder;
+            color:#8052ec;
+            cursor: pointer;
+	}
+	
+	.b2{
+        cursor: pointer;
+		font-family: 'popins';
+		font-size:32px;
+		font-weight: bolder;
+		width:10%;
+		height:50%;
+		border-radius: 10px;
+		margin-left:120px;
+        color:#d161ff;
+	}
+	</style>
+</head>
+<body>
+<div class="container">
+<button class="b1"></button>
+<button class="b1"></button>
+<button class="b1"></button>
+<button class="b1"></button>
+<button class="b1"></button>
+<button class="b1"></button>
+<button class="b1"></button>
+<button class="b1"></button>
+<button class="b1"></button>
+</div>
+	<button class="b2">Restart</button>
+	<script>
+    const cells = document.querySelectorAll('.b1');
+    let currentPlayer = 'X';
+    let isGameActive = true;
+
+    cells.forEach(cell => {
+        cell.addEventListener('click', () => {
+            if (!isGameActive || cell.textContent !== '') return;
+
+            cell.textContent = currentPlayer;
+
+            if (checkWin()) {
+                isGameActive = false;
+                alert(`Player ${currentPlayer} wins!`);
+            } else if (isBoardFull()) {
+                isGameActive = false;
+                alert("It's a draw!");
+            } else {
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            }
+        });
+    });
+
+    document.querySelector('.b2').addEventListener('click', () => {
+        cells.forEach(cell => {
+            cell.textContent = '';
+        });
+        currentPlayer = 'X';
+        isGameActive = true;
+    });
+
+    // Function to check if there's a win
+    function checkWin() {
+        const winPatterns = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+            [0, 4, 8], [2, 4, 6] // Diagonals
+        ];
+
+        return winPatterns.some(pattern => {
+            const [a, b, c] = pattern;
+            return cells[a].textContent &&
+                cells[a].textContent === cells[b].textContent &&
+                cells[a].textContent === cells[c].textContent;
+        });
+    }
+
+    // Function to check if the board is full (draw)
+    function isBoardFull() {
+        return [...cells].every(cell => cell.textContent !== '');
+    }
+</script>
+</body>
+</html>
